@@ -64,33 +64,33 @@ databaseRef.ref().on("child_added", function (childSnapshot) {
   console.log(childSnapshot.val().first_train);
   console.log(childSnapshot.val().frequency);
 
-  frequency = childSnapshot.val().frequency;
+  frequency = parseInt(childSnapshot.val().frequency);
   firstTime = childSnapshot.val().first_train;
-  var nextTrain = moment().add(tMinutesTillTrain, "minutes");
   console.log(moment(nextTrain).format("hh:mm"));
   console.log(frequency);
   console.log(diffTime);
-  var tRemainder = diffTime % frequency;
   console.log(tRemainder);
-
-
-
+  
+  
+  
   var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
   console.log(firstTimeConverted);
-
+  
   // Current Time
   var currentTime = moment();
   console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
-
+  
   // Difference between the times
   var diffTime = moment().diff(moment(firstTimeConverted).format("mm"), "minutes");
   console.log("DIFFERENCE IN TIME: " + diffTime);
+  var tRemainder = diffTime % frequency;
   // Minute Until Train
   var tMinutesTillTrain = frequency - tRemainder;
+  var nextTrain = moment().add(tMinutesTillTrain, "minutes");
   console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
   // full list of items to the well
-  $("#train-table").append("<tr class='row'><td class='train-name'> " +
+  $("#train-table").append("<tr><td class='train-name'> " +
     childSnapshot.val().train_name +
     " </td><td class='train-destination'> " + childSnapshot.val().destination +
     " </td><td class='train-freq'> " + childSnapshot.val().frequency +
