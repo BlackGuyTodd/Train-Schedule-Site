@@ -14,24 +14,7 @@ var trainName = "";
 var destination = "";
 var firstTrainTime;
 var frequency;
-
-
-
-
-
-// Time is 3:30 AM
 var firstTime;
-
-// First Time (pushed back 1 year to make sure it comes before current time)
-
-
-// Time apart (remainder)
-
-// Next Train
-
-// console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-
-
 
 //FUNCTIONS=============================================================================================
 $("#add-train").on("click", function (event) {
@@ -54,40 +37,32 @@ $("#add-train").on("click", function (event) {
     dateAdded: firebase.database.ServerValue.TIMESTAMP
   });
 
+  $("#train-name").val("");
+  $("#destination").val("");
+  $("#first-train-time").val("");
+  $("#frequency").val("");
 });
 
 databaseRef.ref().on("child_added", function (childSnapshot) {
-  console.log(moment(currentTime).format("hh:mm a"));
-  // Log everything that's coming out of snapshot
-  console.log(childSnapshot.val().train_name);
-  console.log(childSnapshot.val().destination);
-  console.log(childSnapshot.val().first_train);
-  console.log(childSnapshot.val().frequency);
-
+  
   frequency = parseInt(childSnapshot.val().frequency);
   firstTime = childSnapshot.val().first_train;
-  console.log(moment(nextTrain).format("hh:mm"));
-  console.log(frequency);
-  console.log(diffTime);
-  console.log(tRemainder);
   
   
   
   var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-  console.log(firstTimeConverted);
+  
   
   // Current Time
   var currentTime = moment();
-  console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+  
   
   // Difference between the times
   var diffTime = moment().diff(moment(firstTimeConverted).format("mm"), "minutes");
-  console.log("DIFFERENCE IN TIME: " + diffTime);
   var tRemainder = diffTime % frequency;
   // Minute Until Train
   var tMinutesTillTrain = frequency - tRemainder;
   var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-  console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
   // full list of items to the well
   $("#train-table").append("<tr><td class='train-name'> " +
